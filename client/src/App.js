@@ -22,37 +22,29 @@ const styles = theme => ({
   }
 })
 
-const customers = [
-  {
-    'id' : 1,
-    'image' : 'https://placeimg.com/64/64/1',
-    'name' : '한재철',
-    'birthday' : '780625',
-    'gender' : '남자',
-    'job' : '대학생'
-  },
-  {
-    'id' : 2,
-    'image' : 'https://placeimg.com/64/64/2',
-    'name' : '한준탁',
-    'birthday' : '1111111',
-    'gender' : '남자',
-    'job' : '초등5'
-  },
-  {
-    'id' : 3,
-    'image' : 'https://placeimg.com/64/64/3',
-    'name' : '한준서',
-    'birthday' : '222222',
-    'gender' : '여자',
-    'job' : '초등2'
-  }
-]
+
 //const { classes } = this.props;
 
-function App() {
+//function App() {
+  class App extends Component {
 
-    //
+    state = {
+      customers: ""
+    }
+
+    componentDidMount() {
+      this.callApi()
+        .then(res => this.setState({customers: res}))
+        .catch(err => console.log(err));
+    }
+
+    callApi = async () => {
+      const response = await fetch('/api/customers');
+      const body = await response.json();
+      return body;
+    }
+
+    render() {
     return (
         <Paper >
           <Table >
@@ -67,29 +59,16 @@ function App() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-                customers.map(c => {
-                  return(
-                    <Customer
-                      key={c.id}
-                      id={c.id}
-                      image={c.image}
-                      name={c.name}
-                      birthday={c.birthday}
-                      gender={c.gender}
-                      job={c.job}
-                      >
-                      </Customer>
-                  )
-                })
-              }
+              {this.state.customers ? this.state.customers.map(c => {
+                  return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}/> ); 
+                }) : ""}
             </TableBody>
           </Table>
       </Paper>
     );
  
 }
-
+}
 //export default withStyles(styles)(App);
 
 export default withStyles(styles)(App);
