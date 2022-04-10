@@ -10,6 +10,9 @@ import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
 import { Component } from 'react';
 import { render } from '@testing-library/react';
+import { mergeClasses } from '@material-ui/styles';
+import React from 'react';
+
 
 const styles = theme => ({
   root: {
@@ -33,16 +36,33 @@ const styles = theme => ({
     }
 
     componentDidMount() {
+      //this.timer = setInterval(this.progress, 20);
       this.callApi()
         .then(res => this.setState({customers: res}))
-        .catch(err => console.log(err));
-    }
+        //.then(res => this.setState({response: res.express}))
+        .then((json) => console.log(json));
+        //.catch(err => console.log(err));
 
+        //fetch("https://jsonplaceholder.typicode.com/posts/1")
+        //fetch('http://localhost:3000/api/customers')
+      //fetch('/api/customers')
+
+        //.then((response) => console.log("response:", response))
+        //.catch((error) => console.log("error:", error));
+        //.then((response) => response.json())
+        //.then((data) => console.log(data));
+
+     }
+
+    
     callApi = async () => {
       const response = await fetch('/api/customers');
       const body = await response.json();
+      //console.log(body);
       return body;
     }
+
+   
 
     render() {
     return (
@@ -61,7 +81,7 @@ const styles = theme => ({
             <TableBody>
               {this.state.customers ? this.state.customers.map(c => {
                   return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}/> ); 
-                }) : ""}
+                }) : "1234" }
             </TableBody>
           </Table>
       </Paper>
